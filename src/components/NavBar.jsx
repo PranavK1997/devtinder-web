@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -12,9 +13,11 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex items-center gap-4">
-        <Link to="/login" className="btn btn-outline btn-sm">
-          Login
-        </Link>
+        {!user && (
+          <Link to="/login" className="btn btn-outline btn-sm">
+            Login
+          </Link>
+        )}
         {user && (
           <div className="flex items-center gap-2 mx-5">
             <p className="px-2">Welcome, {user.firstName}</p>
