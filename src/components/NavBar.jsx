@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
@@ -12,53 +11,74 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post(
-        BASE_URL + "/logout",
-        {},
-        { withCredentials: true }
-      );
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
       dispatch(removeUser());
-      return navigate("/login");
+      navigate("/login");
     } catch (err) {}
   };
 
   return (
-    <div className="navbar bg-base-200 shadow-md px-4">
+    <div className="navbar bg-base-100 shadow-md px-6 py-3 sticky top-0 z-50">
       <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-2xl font-bold">
+        <Link
+          to="/"
+          className="text-3xl font-extrabold text-primary hover:text-secondary transition duration-300"
+        >
           👨‍💻 DevTinder
         </Link>
       </div>
-      <div className="flex items-center gap-4">
+
+      <div className="flex-none gap-4">
         {!user && (
-          <Link to="/login" className="btn btn-outline btn-sm">
+          <Link
+            to="/login"
+            className="btn btn-outline btn-sm btn-primary transition-all hover:scale-105"
+          >
             Login
           </Link>
         )}
+
         {user && (
-          <div className="flex items-center gap-2 mx-5">
-            <p className="px-2">Welcome, {user.firstName}</p>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium hidden sm:inline">
+              Welcome, <span className="text-primary">{user.firstName}</span>
+            </span>
+
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 transition duration-300 hover:scale-105">
+                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 hover:scale-105 transition duration-300">
                   <img alt="User" src={user.photoURL} />
                 </div>
               </label>
+
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow-lg bg-base-200 rounded-box w-56 space-y-1"
               >
                 <li>
-                  <Link to="/profile" className="justify-between">
+                  <Link
+                    to="/profile"
+                    className="flex justify-between items-center"
+                  >
                     Profile
-                    <span className="badge badge-primary">New</span>
+                    <span className="badge badge-primary text-xs">New</span>
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link
+                    to="/connections"
+                    className="hover:bg-base-300 rounded-md px-2 py-1 block"
+                  >
+                    Connections
+                  </Link>
                 </li>
                 <li>
-                  <a onClick={handleLogout}>Logout</a>
+                  <a
+                    onClick={handleLogout}
+                    className="hover:bg-error hover:text-white rounded-md px-2 py-1 transition"
+                  >
+                    Logout
+                  </a>
                 </li>
               </ul>
             </div>
