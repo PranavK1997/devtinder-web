@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import NavBar from "./NavBar";
 import { Outlet, useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 import Footer from "./Footer";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
-import { addUser } from "../utils/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, removeUser } from "../utils/userSlice";
+import { useEffect } from "react";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -13,33 +13,33 @@ const Body = () => {
   const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
+    if (userData) return;
+
     try {
-      const res = await axios.get(BASE_URL + "/profile/view", {
+      const res = await axios.get(`${BASE_URL}/me`, {
         withCredentials: true,
       });
-
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.response?.status === 401) {
+      if (err?.response?.status === 401) {
+        dispatch(removeUser());
         navigate("/login");
+      } else {
+        console.error("Failed to fetch user:", err);
       }
     }
   };
 
   useEffect(() => {
-    if (!userData) {
-      fetchUser();
-    }
+    fetchUser();
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-base-300 text-base-content">
+    <div className="flex flex-col min-h-screen">
       <NavBar />
 
-      <main className="flex-grow px-4 md:px-10 py-6 bg-base-200">
-        <div className="max-w-7xl mx-auto">
-          <Outlet />
-        </div>
+      <main className="flex-grow">
+        <Outlet />
       </main>
 
       <Footer />
