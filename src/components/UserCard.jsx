@@ -22,15 +22,17 @@ const UserCard = ({ user }) => {
 
   return (
     <div className="card bg-base-200 w-96 shadow-xl rounded-2xl overflow-hidden text-white">
-      <figure className="h-60 bg-gray-900 flex justify-center items-center">
+      <figure className="h-60 bg-gray-900 overflow-hidden">
         {photoURL ? (
           <img
             src={photoURL}
             alt="User"
-            className="object-cover h-full w-full"
+            className="h-full w-full object-cover object-top"
           />
         ) : (
-          <div className="text-gray-400 text-center">No Photo</div>
+          <div className="h-full flex justify-center items-center text-gray-400">
+            No Photo
+          </div>
         )}
       </figure>
 
