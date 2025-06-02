@@ -29,12 +29,10 @@ const NavBar = () => {
 
       {user && (
         <div className="flex-none flex items-center gap-3">
-          {/* Welcome Text */}
           <div className="whitespace-nowrap font-semibold text-white">
             Welcome, {user.firstName}
           </div>
 
-          {/* User avatar with dropdown */}
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
